@@ -1,9 +1,8 @@
 import {PropsWithChildren, ReactNode, useState} from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import {Link, router} from '@inertiajs/react';
+import {Link} from '@inertiajs/react';
 import FooterLink from "@/Components/FooterLink";
 import DarkModeToggle from "@/Components/DarkModeToggle";
-import {render} from "react-dom";
 
 type MainLayoutProps = {
     user?: { name: string, email: string };
