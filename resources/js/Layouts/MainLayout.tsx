@@ -20,10 +20,6 @@ export default function MainLayout({ user, header, children, navigationLinks, dr
         setMobileMenuOpen(!mobileMenuOpen);
     }
 
-    // router.on('invalid', (e) => {
-    //     e.preventDefault();
-    // });
-
     return (
         <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
             <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
@@ -71,7 +67,7 @@ export default function MainLayout({ user, header, children, navigationLinks, dr
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex flex-col">
                     <div className="flex justify-between my-auto">
                         <FooterLink href="https://github.com/zspratt21">&#xf1f9; {new Date().getFullYear()} Zspratt21</FooterLink>
-                        <FooterLink href="">Breezehome &#xf015; Starter Template</FooterLink>
+                        <FooterLink href="https://github.com/zspratt21/breezehome">Breezehome &#xf015; Starter Template</FooterLink>
                     </div>
                 </div>
             </footer>

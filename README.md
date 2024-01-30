@@ -29,7 +29,7 @@ Breezehome is an extension of the React & Inertia stack of Laravel's Breeze temp
 For Windows users it is HIGHLY recommended to use WSL2 and install the above dependencies on any distro of your choice (E.G Ubuntu). It's also recommended to store the project in your WSL filesystem. This is because the Docker development environment is very slow on regular Windows.
 
 ## Installation
-1. Clone the repository `git clone`
+1. Begin by starting a new project from this template.
 2. You can either use your own certificates or follow [this guide](https://gist.github.com/cecilemuller/9492b848eb8fe46d462abeb26656c4f8) to generate local ssl certificates, where you will also need to install the root certificate into your machine's trusted root certification authorities and place the ssl cert and key in the docker/ssl/certs folder, ensuring they are named 'localhost.crt' and 'localhost.key' respectively.
 3. Run `composer install`
 4. Run `yarn`
