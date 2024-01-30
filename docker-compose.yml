@@ -1,0 +1,97 @@
+version: '3'
+services:
+  web:
+    image: webdevops/php-nginx-dev:8.2
+    restart: unless-stopped
+    ports:
+      - "${DOCKER_NGINX_HTTP_PORT:-80}:80"
+      - "${DOCKER_NGINX_HTTPS_PORT:-443}:443"
+    environment:
+      - WEB_DOCUMENT_ROOT=/app/public
+      - XDEBUG_CLIENT_HOST=${DOCKER_XDEBUG_CLIENT_HOST:-host.docker.internal}
+    volumes:
+      - ./:/app
+      - ${SSL_CERTIFICATE_PATH:-./docker/ssl/certs/localhost.crt}:/opt/docker/etc/nginx/ssl/server.crt
+      - ${SSL_CERTIFICATE_KEY_PATH:-./docker/ssl/certs/localhost.key}:/opt/docker/etc/nginx/ssl/server.key
+    depends_on:
+      - db
+      - s3
+      - meilisearch
+    env_file: .env
+
+  db:
+    image: mysql:8.2
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "${DB_PORT:-3306}:3306"
+
+  s3:
+    image: minio/minio:RELEASE.2023-12-23T07-19-11Z
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_SERVER_URL: ${AWS_SERVER_URL:-https://localhost:9000}
+    ports:
+      - "${DOCKER_MINIO_PORT:-9000}:9000"
+      - "${DOCKER_MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - s3_bucket:/data
+      - ${SSL_CERTIFICATE_PATH:-./docker/ssl/certs/localhost.crt}:/root/.minio/certs/public.crt
+      - ${SSL_CERTIFICATE_KEY_PATH:-./docker/ssl/certs/localhost.key}:/root/.minio/certs/private.key
+    command: minio server --console-address ":9001" /data
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.5.1
+    restart: unless-stopped
+    ports:
+      - "${MEILISEARCH_PORT:-7700}:7700"
+    environment:
+      MEILISEARCH_MASTER_KEY: ${MEILISEARCH_MASTER_KEY}
+    volumes:
+      - meilisearch_data:/data.ms
+      - ${SSL_CERTIFICATE_PATH:-./docker/ssl/certs/localhost.crt}:/etc/docker/ssl/certs/localhost.crt
+      - ${SSL_CERTIFICATE_KEY_PATH:-./docker/ssl/certs/localhost.key}:/etc/docker/ssl/certs/localhost.key
+    working_dir: /
+    command: ./meilisearch --ssl-cert-path /etc/docker/ssl/certs/localhost.crt --ssl-key-path /etc/docker/ssl/certs/localhost.key
+
+  vite:
+    image: node:21
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: bash -c "yarn ; yarn dev"
+    depends_on:
+      - web
+    ports:
+      - "${VITE_PORT:-5173}:${VITE_PORT:-5173}"
+    env_file: .env
+
+  mailpit:
+    image: 'axllent/mailpit:latest'
+    restart: unless-stopped
+    ports:
+        - '${MAIL_PORT:-1025}:1025'
+        - '${MAIL_DASHBOARD_PORT:-8025}:8025'
+    volumes:
+        - ${SSL_CERTIFICATE_PATH:-./docker/ssl/certs/localhost.crt}:/certs/localhost.crt
+        - ${SSL_CERTIFICATE_KEY_PATH:-./docker/ssl/certs/localhost.key}:/certs/localhost.key
+        - mailpit_data:/data
+    environment:
+        MP_UI_TLS_CERT: /certs/localhost.crt
+        MP_UI_TLS_KEY: /certs/localhost.key
+        MP_DATA_FILE: /data/mailpit.db
+
+volumes:
+  mailpit_data:
+  meilisearch_data:
+  mysql_data:
+  s3_bucket:
