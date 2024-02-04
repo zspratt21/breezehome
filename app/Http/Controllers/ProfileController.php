@@ -30,8 +30,6 @@ class ProfileController extends Controller
     public function dashboard(): Response
     {
         $user = Auth::user();
-        clock($user->avatar);
-        clock($user->getRawOriginal('avatar'));
         if (count((array) json_decode($user->two_factor_recovery_codes)) < 1 && $user->two_factor_enabled) {
             $codes = generateTwoFactorRecoveryCodes(5);
             $user->two_factor_recovery_codes = json_encode($codes);
