@@ -15,10 +15,11 @@ class RestrictToAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()->id !== 1) {
-            abort(403);
-        } else {
-            return $next($request);
+        if ($request->user()) {
+            if ($request->user()->id == 1) {
+                return $next($request);
+            }
         }
+        abort(403);
     }
 }
