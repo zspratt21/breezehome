@@ -8,11 +8,13 @@ services:
       - "${DOCKER_NGINX_HTTPS_PORT:-443}:443"
     environment:
       - WEB_DOCUMENT_ROOT=/app/public
-      - XDEBUG_CLIENT_HOST=${DOCKER_XDEBUG_CLIENT_HOST:-host.docker.internal}
     volumes:
       - ./:/app
       - ${SSL_CERTIFICATE_PATH:-./docker/ssl/certs/localhost.crt}:/opt/docker/etc/nginx/ssl/server.crt
       - ${SSL_CERTIFICATE_KEY_PATH:-./docker/ssl/certs/localhost.key}:/opt/docker/etc/nginx/ssl/server.key
+      - ${SSL_CERTIFICATE_AUTHORITY_PATH:-./docker/ssl/certs/RootCA.pem}:/etc/ssl/certs/local_root_ca.crt
+      - ./docker/web/php.ini:/opt/docker/etc/php/php.ini
+      - ./docker/web/entrypoint.sh:/opt/docker/bin/entrypoint.sh
     depends_on:
       - db
       - s3
