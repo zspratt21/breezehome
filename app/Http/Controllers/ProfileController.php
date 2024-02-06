@@ -46,26 +46,20 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $response = Redirect::route('profile.edit');
         $request->user()->fill($request->validated());
-        $update = [
-            'name' => $request->user()->name,
-            'email' => $request->user()->email,
-        ];
         if ($request->user()->isDirty('email')) {
-            $update['email_verified_at'] = null;
+            $request->user()->email_verified_at = null;
         }
         if ((int) $request->remove_avatar == 1) {
             $request->user()->deleteAvatar();
-            $update['avatar'] = null;
+            $request->user()->avatar = null;
         } elseif ($request->hasFile('file_avatar')) {
             $request->user()->deleteAvatar();
-            $upload = $request->file('file_avatar')->storePubliclyAs('users/'.Auth::user()->id.'/avatars', date('U').'_'.$request->file('file_avatar')->getClientOriginalName(), ['disk' => env('APP_DISK', 's3')]);
-            $update['avatar'] = $upload ?: null;
+            $request->user()->avatar = $request->file('file_avatar')->storePubliclyAs('users/'.Auth::user()->id.'/avatar', date('U').'.'.$request->file('file_avatar')->clientExtension(), ['disk' => env('APP_DISK', 's3')]);
         }
-        Auth::user()->update($update);
+        $request->user()->save();
 
-        return $response;
+        return Redirect::route('profile.edit');
     }
 
     /**
