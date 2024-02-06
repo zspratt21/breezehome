@@ -44,6 +44,7 @@ export default function EnterOnetimePasscode ({}) {
                                  required
                                  autoComplete="off"
                                  onChange={(e) => setData('code', e.target.value)}
+                                 isFocused
                              />
                              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                                  Can't access authenticator app?&nbsp;
