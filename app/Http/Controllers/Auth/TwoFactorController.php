@@ -42,6 +42,7 @@ class TwoFactorController extends Controller
         Auth::login($user);
         Redis::del($this->getTokenHash());
         session()->forget(['two_factor_token', 'two_factor_token_created_at']);
+        session()->regenerate();
     }
 
     /**
