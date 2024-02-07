@@ -12,7 +12,7 @@ use chillerlan\QRCode\QROptions;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
 use Inertia\Response;
 use PragmaRX\Google2FA\Google2FA;
@@ -26,7 +26,7 @@ class TwoFactorController extends Controller
     public function getTokenHash(): ?string
     {
         if (session('two_factor_token_created_at') && session('two_factor_token')) {
-            return hash('sha512', session('two_factor_token_created_at').'_'.session('two_factor_token'));
+            return '2fa_token_'.hash('sha512', session('two_factor_token_created_at').'_'.session('two_factor_token'));
         }
 
         return null;
@@ -40,7 +40,7 @@ class TwoFactorController extends Controller
     public function process2faSuccess(User $user): void
     {
         Auth::login($user);
-        DB::table('two_factor_tokens')->where('token', $this->getTokenHash())->delete();
+        Redis::del($this->getTokenHash());
         session()->forget(['two_factor_token', 'two_factor_token_created_at']);
     }
 
@@ -49,7 +49,8 @@ class TwoFactorController extends Controller
      */
     public function show(): Response|RedirectResponse
     {
-        $session_token = DB::table('two_factor_tokens')->where('token', $this->getTokenHash())->first();
+        $session_token = Redis::get($this->getTokenHash());
+
         if ($session_token) {
             return Inertia::render('Auth/EnterOnetimePasscode');
         }
@@ -62,9 +63,9 @@ class TwoFactorController extends Controller
      */
     public function check(): RedirectResponse
     {
-        $session_token = DB::table('two_factor_tokens')->where('token', $this->getTokenHash())->first();
+        $session_token = Redis::get($this->getTokenHash());
         if ($session_token) {
-            $user = User::where('email', $session_token->user_email)->first();
+            $user = User::where('email', $session_token)->first();
             if ($user->exists()) {
                 if (request()->input('isRecovery')) {
                     $codes = json_decode($user->two_factor_recovery_codes);
