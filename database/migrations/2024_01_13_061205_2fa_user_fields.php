@@ -33,8 +33,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
-               'two_factor_secret',
-               'two_factor_recovery_codes',
+                'two_factor_secret',
+                'two_factor_recovery_codes',
             ]);
         });
     }
