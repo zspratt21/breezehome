@@ -5,6 +5,7 @@ export default function SaveButton({ type = 'button', className = '', disabled, 
     return (
         <PrimaryButton
             {...props}
+            className={className}
         ><b className="fas">&#xf0c7;</b>&nbsp;Save
         </PrimaryButton>
     );
