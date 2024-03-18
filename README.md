@@ -13,6 +13,7 @@ Breezehome is an extension of the React & Inertia stack of Laravel's Breeze temp
 - [x] A custom non-sail, HTTPS oriented Docker environment for local development which includes
     - A PHP + Nginx webserver with xDebug preconfigured
     - A MySQL database
+    - A Redis instance for sessions, caching and handling 2FA tokens
     - An S3 API compatible object storage server (MinIO)
     - A local instance of MeiliSearch
     - A Vite server for hot module reloading
