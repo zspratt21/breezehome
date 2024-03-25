@@ -9,7 +9,7 @@ Breezehome is an extension of the React & Inertia stack of Laravel's Breeze temp
 - [x] MeiliSearch integration via Laravel Scout
 - [x] Sentry integration for improved error reporting
 - [x] Clockwork integration for var dumping and debugging
-- [x] Yarn for package management instead of NPM
+- [x] NPM package manager for front-end dependencies
 - [x] A custom non-sail, HTTPS oriented Docker environment for local development which includes
     - A PHP + Nginx webserver with xDebug preconfigured
     - A MySQL database
@@ -23,7 +23,6 @@ Breezehome is an extension of the React & Inertia stack of Laravel's Breeze temp
 - PHP 8.2
 - Composer
 - NodeJS 21
-- Yarn
 - OpenSSL
 - Docker & Docker Compose
 
@@ -33,14 +32,14 @@ For Windows users it is HIGHLY recommended to use WSL2 and install the above dep
 1. Begin by starting a new project from this template.
 2. You can either use your own certificates or follow [this guide](https://gist.github.com/cecilemuller/9492b848eb8fe46d462abeb26656c4f8) to generate local ssl certificates, where you will also need to install the root certificate into your machine's trusted root certification authorities and place the ssl cert and key in the docker/ssl/certs folder, ensuring they are named 'localhost.crt' and 'localhost.key' respectively.
 3. Run `composer install`
-4. Run `yarn`
+4. Run `npm install`
 5. Run `cp .env.example .env`
 6. Set the xDebug remote host to your local machine's IP address in the .env file
 7. If you want to use Sentry, set the SENTRY_DSN variable to your Sentry DSN's address. 
-8. Modify any other variables in the .env file as needed.
+8. Modify any other variables in the .env file as needed such as setting the TZ variable to your area if you want the output timestamps from your docker containers to match your timezone.
 9. Run `php artisan key:generate`
 10. Run `php artisan migrate` from within the web container not your host machine terminal
-11. Run `yarn build`
+11. Run `npm run build`
 
 ## Running the application
 To start the local development environment powered by Docker, run `docker-compose up -d`

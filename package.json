@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "stop-vite-container": "docker-compose down vite && rm ./public/hot -f && yarn build",
+        "stop-vite-container": "docker-compose down vite && rm ./public/hot -f && npm run build",
         "build": "tsc && vite build"
     },
     "devDependencies": {
