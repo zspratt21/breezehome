@@ -48,7 +48,7 @@ services:
     restart: unless-stopped
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
       MINIO_SERVER_URL: ${AWS_SERVER_URL:-https://localhost:9000}
     ports:
       - "${DOCKER_MINIO_PORT:-9000}:9000"
