@@ -1,7 +1,22 @@
-import {useState, useEffect, ButtonHTMLAttributes} from 'react';
+import { useState, useEffect, ButtonHTMLAttributes } from 'react';
 
-export default function DarkModeToggle(props: ButtonHTMLAttributes<HTMLButtonElement>) {
+export default function DarkModeToggle(
+    props: ButtonHTMLAttributes<HTMLButtonElement>,
+    className: string,
+) {
     const [isDarkMode, setIsDarkMode] = useState(false);
+
+    function toggleClass() {
+        if (
+            localStorage.getItem('color-theme') === 'dark'
+            || (!('color-theme' in localStorage)
+                && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }
 
     const toggleDarkMode = () => {
         setIsDarkMode((prevMode) => {
@@ -11,18 +26,6 @@ export default function DarkModeToggle(props: ButtonHTMLAttributes<HTMLButtonEle
             return newMode;
         });
     };
-
-    function toggleClass() {
-        if (
-            localStorage.getItem('color-theme') === 'dark' ||
-            (!('color-theme' in localStorage) &&
-                window.matchMedia('(prefers-color-scheme: dark)').matches)
-        ) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    }
 
     useEffect(() => {
         const storedTheme = localStorage.getItem('color-theme');
@@ -35,7 +38,7 @@ export default function DarkModeToggle(props: ButtonHTMLAttributes<HTMLButtonEle
         <button
             onClick={toggleDarkMode}
             type="button"
-            className={`theme-toggle ${props.className}`}
+            className={`theme-toggle ${className}`}
             {...props}
         >
             <span className="fas">
@@ -47,4 +50,4 @@ export default function DarkModeToggle(props: ButtonHTMLAttributes<HTMLButtonEle
             </span>
         </button>
     );
-};
+}

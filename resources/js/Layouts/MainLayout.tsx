@@ -1,8 +1,8 @@
-import {PropsWithChildren, ReactNode, useState} from 'react';
+import { PropsWithChildren, ReactNode, useState } from 'react';
+import { Link } from '@inertiajs/react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import {Link} from '@inertiajs/react';
-import FooterLink from "@/Components/FooterLink";
-import DarkModeToggle from "@/Components/DarkModeToggle";
+import FooterLink from '@/Components/FooterLink';
+import DarkModeToggle from '@/Components/DarkModeToggle';
 
 type MainLayoutProps = {
     user?: { name: string, email: string };
@@ -12,12 +12,13 @@ type MainLayoutProps = {
     dropdownContent?: ReactNode;
 };
 
-export default function MainLayout({ user, header, children, navigationLinks, dropdownContent }: PropsWithChildren<MainLayoutProps>) {
-
+export default function MainLayout({
+    user, header, children, navigationLinks, dropdownContent,
+}: PropsWithChildren<MainLayoutProps>) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const toggleMobileMenu = () => {
         setMobileMenuOpen(!mobileMenuOpen);
-    }
+    };
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
@@ -28,10 +29,12 @@ export default function MainLayout({ user, header, children, navigationLinks, dr
                             <div className="shrink-0 space-x-6 flex items-center">
                                 <Link href="/">
                                     <ApplicationLogo
-                                        className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"/>
+                                        className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
+                                    />
                                 </Link>
                                 <DarkModeToggle
-                                    className="text-white dark:text-gray-800 bg-gray-400 dark:bg-gray-500 p-1 w-8 h-8 rounded-full"/>
+                                    className="text-white dark:text-gray-800 bg-gray-400 dark:bg-gray-500 p-1 w-8 h-8 rounded-full"
+                                />
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -65,7 +68,12 @@ export default function MainLayout({ user, header, children, navigationLinks, dr
             <footer className="bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex flex-col">
                     <div className="flex justify-between my-auto">
-                        <FooterLink href="https://github.com/zspratt21">&#xf1f9; {new Date().getFullYear()} Zspratt21</FooterLink>
+                        <FooterLink href="https://github.com/zspratt21">
+                            &#xf1f9;
+                            {new Date().getFullYear()}
+                            {' '}
+                            Zspratt21
+                        </FooterLink>
                         <FooterLink href="https://github.com/zspratt21/breezehome">Breezehome &#xf015; Starter Template</FooterLink>
                     </div>
                 </div>

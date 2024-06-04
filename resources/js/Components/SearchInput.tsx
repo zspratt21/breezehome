@@ -1,5 +1,5 @@
-import {FormEventHandler, useState} from 'react';
-import axios from "axios";
+import { FormEventHandler, useState } from 'react';
+import axios from 'axios';
 
 interface SearchComponentProps {
     placeholder: string;
@@ -13,12 +13,11 @@ export default function SearchComponent({ placeholder, searchUrl, refreshResults
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        axios.get(searchUrl, { params: { query } }).then(function (response) {
+        axios.get(searchUrl, { params: { query } }).then((response) => {
             refreshResults(response.data);
-        }).catch(function (error) {
+        }).catch((error) => {
             console.error('Search error:', error);
         });
-
     };
 
     return (

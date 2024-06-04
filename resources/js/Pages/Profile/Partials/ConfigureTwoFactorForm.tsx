@@ -1,20 +1,22 @@
-import {useForm, usePage} from "@inertiajs/react";
-import {PageProps} from "@/types";
-import {FormEventHandler, useState} from "react";
-import axios from "axios";
-import PrimaryButton from "@/Components/PrimaryButton";
-import InputLabel from "@/Components/InputLabel";
-import InputError from "@/Components/InputError";
-import NumberInput from "@/Components/NumberInput";
-import DangerButton from "@/Components/DangerButton";
-import RecoveryCodes from "@/Pages/Auth/RecoveryCodes";
+import { useForm, usePage } from '@inertiajs/react';
+import { FormEventHandler, useState } from 'react';
+import axios from 'axios';
+import { PageProps } from '@/types';
+import PrimaryButton from '@/Components/PrimaryButton';
+import InputLabel from '@/Components/InputLabel';
+import InputError from '@/Components/InputError';
+import NumberInput from '@/Components/NumberInput';
+import DangerButton from '@/Components/DangerButton';
+import RecoveryCodes from '@/Pages/Auth/RecoveryCodes';
 
 export default function ConfigureTwoFactorForm({ className = '' }: { className?: string }) {
-    const user = usePage<PageProps>().props.auth.user;
-    const [clickedEnable , setClickedEnable] = useState(false);
-    const [clickedDisable , setClickedDisable] = useState(false);
-    const [mfaEnabled , setMfaEnabled] = useState(user.two_factor_enabled);
-    const { data, setData, post, errors, setError, clearErrors, processing, recentlySuccessful } = useForm({
+    const { user } = usePage<PageProps>().props.auth;
+    const [clickedEnable, setClickedEnable] = useState(false);
+    const [clickedDisable, setClickedDisable] = useState(false);
+    const [mfaEnabled, setMfaEnabled] = useState(user.two_factor_enabled);
+    const {
+        data, setData, post, errors, setError, clearErrors, processing, recentlySuccessful,
+    } = useForm({
         code: '',
     });
     const [qrCode, setQrCode] = useState('');
@@ -30,15 +32,13 @@ export default function ConfigureTwoFactorForm({ className = '' }: { className?:
                     setMfaEnabled(0);
                     setClickedDisable(false);
                     setData('code', '');
-                }
-                else {
+                } else {
                     setError('code', 'Invalid code');
                 }
             }).catch((error) => {
                 console.log(error);
             });
-        }
-        else if (!clickedEnable) {
+        } else if (!clickedEnable) {
             setClickedEnable(true);
             axios.post(route('2fa.enable')).then((response) => {
                 console.log(response);
@@ -46,26 +46,22 @@ export default function ConfigureTwoFactorForm({ className = '' }: { className?:
             }).catch((error) => {
                 console.log(error);
             });
-        }
-        else {
+        } else {
             axios.post(route('2fa.enable.check'), data).then((response) => {
                 console.log(response);
-                if(response.data.valid == 1) {
+                if (response.data.valid == 1) {
                     setMfaEnabled(1);
                     setClickedEnable(false);
                     setQrCode('');
                     setRecoveryCodes(response.data.recovery_codes);
                     setData('code', '');
-                }
-                else {
+                } else {
                     setError('code', 'Invalid code');
                 }
             }).catch((error) => {
                 console.log(error);
             });
-
         }
-
     };
 
     return (
@@ -78,7 +74,7 @@ export default function ConfigureTwoFactorForm({ className = '' }: { className?:
                         <>You have enabled two factor authentication &#xf058;</>
                     ) : (
                         <>Configure two factor authentication to increase the security of your account.</>
-                        )}
+                    )}
                 </p>
             </header>
             <form onSubmit={submit}>
@@ -99,13 +95,15 @@ export default function ConfigureTwoFactorForm({ className = '' }: { className?:
                                                 loading qr code...
                                             </div>
                                         ) : (
-                                            <img src={qrCode} alt="2FA QR Code"></img>
+                                            <img src={qrCode} alt="2FA QR Code" />
                                         )}
                                     </div>
                                 )}
                                 <div className="mt-4">
-                                    <InputLabel htmlFor="code"
-                                                value={!mfaEnabled ? 'Scan the above Qr Code with google authenticator then...' : 'To confirm you want to disable 2FA on your account you need to...'}/>
+                                    <InputLabel
+                                        htmlFor="code"
+                                        value={!mfaEnabled ? 'Scan the above Qr Code with google authenticator then...' : 'To confirm you want to disable 2FA on your account you need to...'}
+                                    />
 
                                     <NumberInput
                                         id="code"
@@ -119,7 +117,7 @@ export default function ConfigureTwoFactorForm({ className = '' }: { className?:
                                         minLength={6}
                                     />
 
-                                    <InputError className="mt-2" message={errors.code}/>
+                                    <InputError className="mt-2" message={errors.code} />
                                 </div>
                                 <div className="mt-4">
                                     {!mfaEnabled ? (
@@ -130,7 +128,7 @@ export default function ConfigureTwoFactorForm({ className = '' }: { className?:
                                         <DangerButton type="submit">
                                             &#xf071; Confirm
                                         </DangerButton>
-                                        )}
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -138,10 +136,10 @@ export default function ConfigureTwoFactorForm({ className = '' }: { className?:
                 ) : (
                     <>
                         {recoveryCodes && (
-                            <RecoveryCodes recoveryCodes={recoveryCodes}/>
+                            <RecoveryCodes recoveryCodes={recoveryCodes} />
                         )}
                         <div className="mt-4">
-                            <DangerButton onClick={(e) => {e.preventDefault(); setClickedDisable(true)}}>
+                            <DangerButton onClick={(e) => { e.preventDefault(); setClickedDisable(true); }}>
                                 &#xf057; Disable
                             </DangerButton>
                         </div>

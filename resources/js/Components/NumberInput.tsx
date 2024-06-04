@@ -1,5 +1,5 @@
-import TextInput from './TextInput';
 import { InputHTMLAttributes } from 'react';
+import TextInput from './TextInput';
 
 export default function NumberInput(props: InputHTMLAttributes<HTMLInputElement> & { isFocused?: boolean }) {
     return (
@@ -12,4 +12,4 @@ export default function NumberInput(props: InputHTMLAttributes<HTMLInputElement>
             }}
         />
     );
-};
+}

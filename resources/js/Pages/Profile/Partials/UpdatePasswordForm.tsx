@@ -1,17 +1,19 @@
 import { useRef, FormEventHandler } from 'react';
+import { useForm } from '@inertiajs/react';
+import { Transition } from '@headlessui/react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { useForm } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
-import SaveButton from "@/Components/SaveButton";
+import SaveButton from '@/Components/SaveButton';
 
 export default function UpdatePasswordForm({ className = '' }: { className?: string }) {
     const passwordInput = useRef<HTMLInputElement>();
     const currentPasswordInput = useRef<HTMLInputElement>();
 
-    const { data, setData, errors, put, reset, processing, recentlySuccessful } = useForm({
+    const {
+        data, setData, errors, put, reset, processing, recentlySuccessful,
+    } = useForm({
         current_password: '',
         password: '',
         password_confirmation: '',
@@ -99,7 +101,7 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <SaveButton disabled={processing}/>
+                    <SaveButton disabled={processing} />
 
                     <Transition
                         show={recentlySuccessful}

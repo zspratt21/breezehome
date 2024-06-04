@@ -1,10 +1,10 @@
 import { Head } from '@inertiajs/react';
-import {PageProps, User} from '@/types';
+import { PageProps, User } from '@/types';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GuestLayout from '@/Layouts/GuestLayout';
-import WelcomeCard from "@/Components/WelcomeCard";
+import WelcomeCard from '@/Components/WelcomeCard';
 
-export default function Welcome({ user, auth, laravelVersion, phpVersion }: PageProps<{ user: User, laravelVersion: string, phpVersion: string }>) {
+export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<{ user: User, laravelVersion: string, phpVersion: string }>) {
     return (
         <>
             <Head title="Welcome" />

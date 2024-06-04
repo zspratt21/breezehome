@@ -1,16 +1,18 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import TextInput from '@/Components/TextInput';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 import { FormEventHandler, useRef, useState } from 'react';
+import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
+import TextInput from '@/Components/TextInput';
 import { PageProps } from '@/types';
-import SaveButton from "@/Components/SaveButton";
-import ImageInput from "@/Components/ImageInput";
+import SaveButton from '@/Components/SaveButton';
+import ImageInput from '@/Components/ImageInput';
 
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }: { mustVerifyEmail: boolean, status?: string, className?: string }) {
-    const user = usePage<PageProps>().props.auth.user;
-    const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
+    const { user } = usePage<PageProps>().props.auth;
+    const {
+        data, setData, post, errors, processing, recentlySuccessful,
+    } = useForm({
         name: user.name,
         email: user.email,
         file_avatar: null as File | null,
@@ -31,7 +33,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     setData('file_avatar', null);
                     setData('remove_avatar', 0);
                 },
-            }
+            },
         );
     };
 
@@ -46,9 +48,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6" key={refreshKey}>
-                <input type="hidden" name="_method" value="patch"/>
+                <input type="hidden" name="_method" value="patch" />
                 <div>
-                    <InputLabel htmlFor="name" value="Name"/>
+                    <InputLabel htmlFor="name" value="Name" />
 
                     <TextInput
                         id="name"
@@ -61,11 +63,11 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         autoComplete="name"
                     />
 
-                    <InputError className="mt-2" message={errors.name}/>
+                    <InputError className="mt-2" message={errors.name} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Email"/>
+                    <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
                         id="email"
@@ -78,7 +80,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         autoComplete="username"
                     />
 
-                    <InputError className="mt-2" message={errors.email}/>
+                    <InputError className="mt-2" message={errors.email} />
                 </div>
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
@@ -103,34 +105,33 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 )}
 
                 <div>
-                    <InputLabel htmlFor="file_avatar" value="Profile Photo"/>
+                    <InputLabel htmlFor="file_avatar" value="Profile Photo" />
 
                     <ImageInput
                         alt="Profile Photo"
                         ref={imageInputRef}
                         initialPhoto={user.avatar}
                         setPhotoData={(file: File | null) => {
-                            setData({...data, file_avatar: file});
+                            setData({ ...data, file_avatar: file });
                             console.log('file', file);
                             console.log(data);
                         }}
                         setRemoveData={(value: 0 | 1) => {
-                            if(value == 1) {
-                                setData({...data, remove_avatar: value, file_avatar: null});
-                            }
-                            else {
-                                setData({...data, remove_avatar: value});
+                            if (value == 1) {
+                                setData({ ...data, remove_avatar: value, file_avatar: null });
+                            } else {
+                                setData({ ...data, remove_avatar: value });
                             }
                         }}
                         id="file_avatar"
                         className="mt-1 block w-full"
                     />
 
-                    <InputError className="mt-2" message={errors.file_avatar}/>
+                    <InputError className="mt-2" message={errors.file_avatar} />
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <SaveButton disabled={processing}/>
+                    <SaveButton disabled={processing} />
 
                     <Transition
                         show={recentlySuccessful}

@@ -1,11 +1,11 @@
 import { useRef, useState, FormEventHandler } from 'react';
+import { useForm } from '@inertiajs/react';
 import DangerButton from '@/Components/DangerButton';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
-import { useForm } from '@inertiajs/react';
 
 export default function DeleteUserForm({ className = '' }: { className?: string }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -54,7 +54,7 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
                 </p>
             </header>
 
-            <DangerButton  onClick={confirmUserDeletion}>&#xf2ed; Delete Account</DangerButton>
+            <DangerButton onClick={confirmUserDeletion}>&#xf2ed; Delete Account</DangerButton>
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">

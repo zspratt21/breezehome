@@ -1,24 +1,24 @@
 import { useEffect, FormEventHandler } from 'react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
-import FullPageForm from "@/Components/FullPageForm";
+import FullPageForm from '@/Components/FullPageForm';
 
 export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const {
+        data, setData, post, processing, errors, reset,
+    } = useForm({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
     });
 
-    useEffect(() => {
-        return () => {
-            reset('password', 'password_confirmation');
-        };
+    useEffect(() => () => {
+        reset('password', 'password_confirmation');
     }, []);
 
     const submit: FormEventHandler = (e) => {
@@ -42,7 +42,7 @@ export default function Register() {
                             placeholder="&#xf007;"
                             className="mt-1 block w-full"
                             autoComplete="name"
-                            isFocused={true}
+                            isFocused
                             onChange={(e) => setData('name', e.target.value)}
                             required
                         />

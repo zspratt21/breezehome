@@ -4,7 +4,9 @@
     "scripts": {
         "dev": "vite",
         "stop-vite-container": "docker-compose down vite && rm ./public/hot -f && npm run build",
-        "build": "tsc && vite build"
+        "build": "tsc && vite build",
+        "lint": "eslint 'resources/**/*.{js,ts,tsx}'",
+        "lint:fix": "eslint 'resources/**/*.{js,ts,tsx}' --fix"
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
