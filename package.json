@@ -6,8 +6,8 @@
         "stop-vite-container": "docker-compose down vite && rm ./public/hot -f && npm run build",
         "build": "tsc && vite build",
         "build-no-check": "vite build",
-        "gen_key": "php -r \"echo bin2hex(random_bytes(16)).\\\"\\n\\\";\"",
-        "meili import users": "docker-compose exec web sh -c 'cd app && php artisan scout:import \"App\\\\Models\\\\User\"'"
+        "gen-key": "php -r \"echo bin2hex(random_bytes(16)).\\\"\\n\\\";\"",
+        "docker-meili-import-users": "docker-compose exec web sh -c 'cd app && php artisan scout:import \"App\\\\Models\\\\User\"'"
     },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",
