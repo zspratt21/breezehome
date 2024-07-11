@@ -19,14 +19,16 @@ use PragmaRX\Google2FA\Google2FA;
 
 class TwoFactorController extends Controller
 {
-
     /**
      * Get the hash of the current two-factor token.
      */
     public function getTokenHash(): ?string
     {
         if (session('two_factor_token_created_at') && session('two_factor_token')) {
-            return '2fa_token_'.hash('sha512', session('two_factor_token_created_at').'_'.session('two_factor_token'));
+            $token = session('two_factor_token');
+            $created_at = session('two_factor_token_created_at');
+            $hash = hash('sha512', "{$created_at}_{$token}");
+            return "2fa_token_{$hash}";
         }
 
         return null;
@@ -35,7 +37,7 @@ class TwoFactorController extends Controller
     /**
      * Process a successful two-factor authentication attempt.
      *
-     * @param  User  $user The user that successfully authenticated.
+     * @param  User  $user  The user that successfully authenticated.
      */
     public function process2faSuccess(User $user): void
     {
@@ -51,7 +53,6 @@ class TwoFactorController extends Controller
     public function show(): Response|RedirectResponse
     {
         $session_token = Redis::get($this->getTokenHash());
-
         if ($session_token) {
             return Inertia::render('Auth/EnterOnetimePasscode');
         }
@@ -96,18 +97,14 @@ class TwoFactorController extends Controller
     /**
      * Validate a two-factor authentication attempt.
      *
-     * @param  string  $two_factor_secret The user's two-factor secret.
-     * @param  string  $code The two-factor code to validate.
+     * @param  string  $two_factor_secret  The user's two-factor secret.
+     * @param  string  $code  The two-factor code to validate.
      */
     public function validateAttempt(string $two_factor_secret, string $code): bool
     {
         $google2fa = new Google2FA();
-        $valid = $google2fa->verifyKey($two_factor_secret, $code);
-        if ($valid) {
-            return true;
-        }
 
-        return false;
+        return $google2fa->verifyKey($two_factor_secret, $code);
     }
 
     /**
@@ -141,7 +138,7 @@ class TwoFactorController extends Controller
         $google2fa = new Google2FA();
         $secret_key = $google2fa->generateSecretKey(32);
         $otpAuthUrl = $google2fa->getQRCodeUrl(
-            env('APP_NAME'),
+            config('app.name'),
             $user->email,
             $secret_key
         );

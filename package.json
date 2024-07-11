@@ -6,28 +6,30 @@
         "stop-vite-container": "docker-compose down vite && rm ./public/hot -f && npm run build",
         "build": "tsc && vite build",
         "build-no-check": "vite build",
-        "gen-key": "php -r \"echo bin2hex(random_bytes(16)).\\\"\\n\\\";\"",
-        "docker-meili-import-users": "docker-compose exec web sh -c 'cd app && php artisan scout:import \"App\\\\Models\\\\User\"'"
+        "docker-db-import": "docker-compose exec db sh -c 'mysql -u root -p\"$MYSQL_ROOT_PASSWORD\" \"$MYSQL_DATABASE\" < /dumps/dump.sql'",
+        "docker-db-dump": "docker-compose exec db sh -c 'mysqldump -u root -p\"$MYSQL_ROOT_PASSWORD\" \"$MYSQL_DATABASE\" > /dumps/dump.sql'",
+        "docker-meili-import-users": "docker-compose exec web sh -c 'cd app && php artisan scout:import \"App\\\\Models\\\\User\"'",
+        "gen-key": "php -r \"echo bin2hex(random_bytes(16)).\\\"\\n\\\";\""
     },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",
-        "@inertiajs/react": "^1.0.0",
+        "@inertiajs/react": "^1.2.0",
         "@tailwindcss/forms": "^0.5.3",
-        "@types/node": "^18.13.0",
-        "@types/react": "^18.0.28",
-        "@types/react-dom": "^18.0.10",
-        "@vitejs/plugin-react": "^4.2.0",
+        "@types/node": "^20.14.10",
+        "@types/react": "^18.3.3",
+        "@types/react-dom": "^18.3.0",
+        "@vitejs/plugin-react": "^4.3.1",
         "autoprefixer": "^10.4.12",
-        "axios": "^1.6.4",
-        "laravel-vite-plugin": "^1.0.0",
-        "postcss": "^8.4.31",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "tailwindcss": "^3.2.1",
-        "typescript": "^5.0.2",
-        "vite": "^5.0.0"
+        "axios": "^1.7.2",
+        "laravel-vite-plugin": "^1.0.5",
+        "postcss": "^8.4.39",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "tailwindcss": "^3.4.4",
+        "typescript": "^5.5.3",
+        "vite": "^5.3.3"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^6.5.1"
+        "@fortawesome/fontawesome-free": "^6.5.2"
     }
 }
