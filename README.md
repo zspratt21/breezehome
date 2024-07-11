@@ -20,9 +20,9 @@ Breezehome is an extension of the React & Inertia stack of Laravel's Breeze temp
     - A Mailpit SMTP server for catching emails
 
 ## Requirements
-- PHP 8.2
+- PHP 8.3
 - Composer
-- NodeJS 21
+- NodeJS 22
 - OpenSSL
 - Docker & Docker Compose
 
