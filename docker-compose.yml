@@ -15,6 +15,7 @@ services:
       - ${SSL_CERTIFICATE_AUTHORITY_PATH:-./docker/ssl/certs/RootCA.pem}:/etc/ssl/certs/local_root_ca.crt
       - ./docker/web/php.ini:/opt/docker/etc/php/php.ini
       - ./docker/web/entrypoint.sh:/opt/docker/bin/entrypoint.sh
+      - ./docker/web/conf/fastcgi_buffers.conf:/opt/docker/etc/nginx/conf.d/fastcgi_buffers.conf
     depends_on:
       - db
       - redis
