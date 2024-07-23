@@ -55,7 +55,7 @@ class ProfileController extends Controller
             $request->user()->avatar = null;
         } elseif ($request->hasFile('file_avatar')) {
             $request->user()->deleteAvatar();
-            $request->user()->avatar = $request->file('file_avatar')->storePubliclyAs('users/'.Auth::user()->id.'/avatar', date('U').'.'.$request->file('file_avatar')->clientExtension(), ['disk' => env('APP_DISK', 's3')]);
+            $request->user()->avatar = $request->file('file_avatar')->storePubliclyAs('users/'.Auth::user()->id.'/avatar', date('U').'.'.$request->file('file_avatar')->clientExtension());
         }
         $request->user()->save();
 

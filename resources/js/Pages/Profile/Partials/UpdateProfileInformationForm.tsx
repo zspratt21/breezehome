@@ -3,7 +3,7 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
-import { FormEventHandler, useRef } from 'react';
+import {FormEventHandler, useEffect, useRef} from 'react';
 import { PageProps } from '@/types';
 import SaveButton from "@/Components/SaveButton";
 import ImageInput from "@/Components/ImageInput";
@@ -20,15 +20,13 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const imageInputRef = useRef(null);
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        console.log('data', data);
         post(
             route('profile.update'),
             {
                 preserveScroll: true,
                 onSuccess: () => {
-                    setData('file_avatar', null);
-                    setData('remove_avatar', 0);
-                },
+                    setData({...data, file_avatar: null, remove_avatar: 0});
+                }
             }
         );
     };
@@ -112,7 +110,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         setRemoveData={(value: 0 | 1) => setData('remove_avatar', value)}
                         id="file_avatar"
                         previewAlt="Profile Photo"
-                        previewClassName="h-66 w-auto"
+                        previewClassName="min-h-36 h-66 w-auto"
                         removed={data.remove_avatar}
                     />
 

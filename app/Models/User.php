@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\HasFileAttribute;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, Searchable;
+    use HasApiTokens, HasFactory, HasFileAttribute, Notifiable, Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -56,9 +56,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected function avatar(): Attribute
     {
-        return new Attribute(function ($value) {
-            return $value ? env('APP_DISK_URL').'/'.$value : null;
-        });
+        return $this->fileAttribute();
     }
 
     /**
@@ -66,11 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function deleteAvatar(): bool
     {
-        if (! $this->getRawOriginal('avatar')) {
-            return true;
-        }
-
-        return Storage::disk(env('APP_DISK', 's3'))->delete($this->getRawOriginal('avatar'));
+        return $this->deleteFile('avatar');
     }
 
     /**
