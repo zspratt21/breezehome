@@ -108,23 +108,16 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputLabel htmlFor="file_avatar" value="Profile Photo" />
 
                     <ImageInput
-                        alt="Profile Photo"
                         ref={imageInputRef}
-                        initialPhoto={user.avatar}
-                        setPhotoData={(file: File | null) => {
-                            setData({ ...data, file_avatar: file });
-                            console.log('file', file);
-                            console.log(data);
-                        }}
-                        setRemoveData={(value: 0 | 1) => {
-                            if (value == 1) {
-                                setData({ ...data, remove_avatar: value, file_avatar: null });
-                            } else {
-                                setData({ ...data, remove_avatar: value });
-                            }
-                        }}
-                        id="file_avatar"
                         className="mt-1 block w-full"
+                        initialPhoto={user.avatar}
+                        current_file={data.file_avatar}
+                        setPhotoData={(photo: File | null) => setData('file_avatar', photo)}
+                        setRemoveData={(value: 0 | 1) => setData('remove_avatar', value)}
+                        id="file_avatar"
+                        previewAlt="Profile Photo"
+                        previewClassName="h-66 w-auto"
+                        removed={data.remove_avatar}
                     />
 
                     <InputError className="mt-2" message={errors.file_avatar} />
