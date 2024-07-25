@@ -9,7 +9,10 @@
         "docker-db-import": "docker-compose exec db sh -c 'mysql -u root -p\"$MYSQL_ROOT_PASSWORD\" \"$MYSQL_DATABASE\" < /dumps/dump.sql'",
         "docker-db-dump": "docker-compose exec db sh -c 'mysqldump -u root -p\"$MYSQL_ROOT_PASSWORD\" \"$MYSQL_DATABASE\" > /dumps/dump.sql'",
         "docker-meili-import-users": "docker-compose exec web sh -c 'cd app && php artisan scout:import \"App\\\\Models\\\\User\"'",
-        "gen-key": "php -r \"echo bin2hex(random_bytes(16)).\\\"\\n\\\";\""
+        "docker-tinker": "docker-compose exec cli php artisan tinker",
+        "docker-config-clear": "docker-compose exec cli php artisan config:clear",
+        "docker-artisan-test": "docker-compose exec cli php artisan test",
+        "pint": "./vendor/bin/pint"
     },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",

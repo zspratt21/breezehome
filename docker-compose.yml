@@ -23,6 +23,22 @@ services:
       - meilisearch
     env_file: .env
 
+  cli:
+    image: webdevops/php-dev:8.3
+    restart: unless-stopped
+    volumes:
+      - ./:/app
+      - ${SSL_CERTIFICATE_PATH:-./docker/ssl/certs/localhost.crt}:/opt/docker/etc/nginx/ssl/server.crt
+      - ${SSL_CERTIFICATE_KEY_PATH:-./docker/ssl/certs/localhost.key}:/opt/docker/etc/nginx/ssl/server.key
+      - ${SSL_CERTIFICATE_AUTHORITY_PATH:-./docker/ssl/certs/RootCA.pem}:/etc/ssl/certs/local_root_ca.crt
+      - ./docker/web/entrypoint.sh:/opt/docker/bin/entrypoint.sh
+      - ./docker/web/php.ini:/opt/docker/etc/php/php.ini
+    working_dir: /app
+    command: tail -f /dev/null
+    env_file: .env.testing
+    depends_on:
+      - web
+
   db:
     image: mysql:9.0
     restart: unless-stopped
