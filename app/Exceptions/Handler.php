@@ -25,7 +25,7 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        if (env('SENTRY_LARAVEL_DSN') == null || env('SENTRY_LARAVEL_DSN') == 'none') {
+        if (config('sentry.dsn') == null || config('sentry.dsn') == 'none') {
             $this->reportable(function (Throwable $e) {
                 //
             });
